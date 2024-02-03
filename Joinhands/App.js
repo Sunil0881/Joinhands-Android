@@ -9,6 +9,7 @@ import signup from './screens/signup.js';
 import Signup_Pass from './screens/signup_pass.js';
 import Home from './screens/Home.js';
 
+
 const Stack = createStackNavigator();
 
 
@@ -22,7 +23,9 @@ const App = () => {
           <Stack.Screen name="Role" component={Role} />
           <Stack.Screen name="signup" component={signup} />
           <Stack.Screen name="signup_pass" component={Signup_Pass} />
+
           <Stack.Screen name="Base" component={Home} />
+
          </Stack.Navigator>
           
     </NavigationContainer>
