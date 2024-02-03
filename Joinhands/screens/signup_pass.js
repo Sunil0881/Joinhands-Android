@@ -8,7 +8,7 @@ const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
-const Signup_Pass = () => {
+const Signup_Pass = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -18,6 +18,7 @@ const Signup_Pass = () => {
       // Navigate to the next screen or perform any other action
       // For now, let's log a message
       console.log('Passwords match! Navigating to the next screen.');
+      navigation.navigate('Base');
     } else {
       // Passwords are either empty or don't match
       // Handle accordingly (show error message, etc.)
