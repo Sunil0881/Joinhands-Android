@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap');
+
+@font-face {
+    font-family: 'Nico-Moji';
+    src:url('Nico-Moji.ttf.woff') format('woff'),
+        url('Nico-Moji.ttf.svg#Nico-Moji') format('svg'),
+        url('Nico-Moji.ttf.eot'),
+        url('Nico-Moji.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
