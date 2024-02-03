@@ -27,6 +27,7 @@ const Signin = ({ navigation }) => {
       <StyledView className='h-full pt-52'>
         <StyledText className='text-3xl pl-10 text-black'>Signin to Joinhands</StyledText>
 
+
         <StyledTextInput
           className='border-2 border-red-400 rounded-md p-2 mx-10 mt-16'
           keyboardType="email-address"
@@ -42,6 +43,7 @@ const Signin = ({ navigation }) => {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
+         
 
         <TouchableOpacity
           onPress={handleNextPress}
