@@ -5,6 +5,8 @@ import { AppRegistry } from 'react-native';
 import Yesorno from "./screens/yesorno.js"
 import Signin from "./screens/signin.js"
 import Role from "./screens/role.js"
+import signup from './screens/signup.js';
+import Signup_Pass from './screens/signup_pass.js';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,8 @@ const App = () => {
           <Stack.Screen name="Home" component={Yesorno} />
           <Stack.Screen name="Signin" component={Signin} />
           <Stack.Screen name="Role" component={Role} />
+          <Stack.Screen name="signup" component={signup} />
+          <Stack.Screen name="signup_pass" component={Signup_Pass} />
           
          </Stack.Navigator>
           

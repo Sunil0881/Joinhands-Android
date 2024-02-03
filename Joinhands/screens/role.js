@@ -1,6 +1,7 @@
 import { styled } from 'nativewind';
 import React from 'react';
 import {  Text, TouchableOpacity, Button, TextInput, View, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ImageBackground } from 'react-native';
 import bgjh from "../assets/bgjh.png"
 import ngo from "../assets/ngo.png"
@@ -12,21 +13,43 @@ const StyledTextInput = styled(TextInput);
 
 
 const Role = () => {
+
+    const navigation = useNavigation();
+
+    const handleNGOClick = () => {
+      // Navigate to the next page for NGO/Trust
+      navigation.navigate('NGOPage0'); // Replace 'NGOPage' with the actual name of your NGO page
+    };
+  
+    const handleDonorClick = () => {
+      // Navigate to the next page for Donor/Hotel
+      navigation.navigate('DonorPage'); // Replace 'DonorPage' with the actual name of your Donor page
+    };
+
+    
     return ( 
         <ImageBackground source={bgjh} style={{width: '100%', height: '100%'}}>
-        <StyledView>
-            <StyledText className='text-black text-3xl pt-52 pl-10'>Who are you ? </StyledText>
-            <StyledView className='flex flex-row pt-10'>
-                <ImageBackground source={ngo} style={{width: '59%', height: '180%'}}></ImageBackground>
-                <StyledText className='text-2xl '>NGO / Trust</StyledText>
+        <StyledView className='flex justify-center items-center '>
+            <StyledText className='text-black text-3xl pt-40 items-center'>Who are you ? </StyledText>
+            <StyledView className='items-center'>
+            <TouchableOpacity onPress={handleNGOClick}>
+            <StyledView className='flex  pt-5 items-center '>
+                <Image source={ngo} ></Image>
+                <StyledText className='text-2xl pt-1 text-red-600 '>NGO / Trust</StyledText>
             </StyledView>
-            <StyledView className='flex flex-row pt-28'>
-                <ImageBackground source={donor} style={{width: '59%', height: '180%'}}></ImageBackground>
-                <StyledText className='text-2xl '>Donor/Hotel</StyledText>
+            </TouchableOpacity>
+            <StyledText className='text-xl'>---------- or ----------</StyledText>
+            <TouchableOpacity onPress={handleDonorClick}>
+            <StyledView className='flex pt-3 items-center '>
+                <Image source={donor} ></Image>
+                <StyledText className='text-2xl text-red-600 pt-1'>Donor/Hotel</StyledText>
+            </StyledView>
+            </TouchableOpacity>
+            </StyledView>
             </StyledView>
 
 
-        </StyledView>
+        
         </ImageBackground>
      );
 }
