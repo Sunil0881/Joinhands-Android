@@ -12,7 +12,7 @@ const Signin = ({ navigation }) => {
   const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleNextPress = async () => {
+  const handleNextPress = async ({navigation}) => {
     if (emailId.trim() !== '' && password.trim() !== '') {
       try {
         const response = await fetch('http://192.168.197.178:3000/login', {
@@ -26,14 +26,12 @@ const Signin = ({ navigation }) => {
         if (response.ok) {
           const responseData = await response.json();
 
-          // Check if the response contains an ngo object with emailId property
-          if (responseData.ngo && responseData.ngo.emailId) {
-            // Navigate to the 'Base' screen or wherever you want to go next
+          // Check if the response contains a valid ngo or donor object with emailId property
+          if ((responseData.ngo && responseData.ngo.emailId) || (responseData.donor && responseData.donor.emailId)) {
             navigation.navigate('Base');
             console.log('Login Successful');
           } else {
-            // Handle the case where the response doesn't contain a valid ngo object
-            Alert.alert('Login Failed', 'Invalid response from the server.');
+            console.log(response.status);
           }
         } else {
           const errorData = await response.json();
@@ -48,8 +46,6 @@ const Signin = ({ navigation }) => {
       Alert.alert('Error', 'Please enter both emailId ID and Password');
     }
   };
-
-
 
   return (
     <ImageBackground source={bgjh} style={{ width: '100%', height: '100%' }}>

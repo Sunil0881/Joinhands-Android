@@ -4,11 +4,12 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { Ngo } = require('../Backend/models/ngoSchema');
+const {Donor} = require('../Backend/models/donorSchema');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors());      
 app.use(bodyParser.json());
 
 mongoose.connect('mongodb+srv://manikandan05082003:Manicdon07%40@cluster0.scriurb.mongodb.net/joinhands', {
@@ -83,24 +84,35 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required.' });
     }
 
-    // Check if the emailId exists in the Ngo documents
-    const existingNgo = await Ngo.findOne({ emailId });
+    console.log('Checking emailId:', emailId);
 
-    if (!existingNgo) {
+    // Check if the emailId exists in the Ngo documents
+    let existingUser = await Ngo.findOne({ emailId });
+
+    console.log('Ngo Check Result:', existingUser);
+
+    // If not found in Ngo, check in Donor documents
+    if (!existingUser) {
+      existingUser = await Donor.findOne({ emailId });
+      console.log('Donor Check Result:', existingUser);
+    }
+
+    if (!existingUser) {
       return res.status(404).json({ error: 'Email not found' });
     }
 
-    // Update the Ngo's password with the entered password
+    // Update the user's password with the entered password
     const hashedPassword = await bcrypt.hash(password, 10);
-    existingNgo.password = hashedPassword;
-    await existingNgo.save();
+    existingUser.password = hashedPassword;
+    await existingUser.save();
 
-    res.json({ message: 'Password updated successfully for the Ngo.', ngo: existingNgo });
+    res.json({ message: 'Password updated successfully for the user.', user: existingUser });
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 app.post('/ngoregistration', async (req, res) => {
@@ -181,6 +193,86 @@ app.post('/updateNgoDetails', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+app.post('/donorRegistration', async (req, res) => {
+  const {
+    shopName,
+    ownerName,
+    category,
+    indexNumber,
+    number,
+    emailId
+  } = req.body;
+
+  try {
+    if (!shopName || !ownerName || !category || !indexNumber || !number || !emailId) {
+      console.log(res.status);
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const existingEmail = await Donor.findOne({ emailId });
+    if (existingEmail) {
+      return res.status(400).json({ error: 'Email already in use.' });
+    }
+
+    const existingMobileNumber = await Donor.findOne({ number });
+    if (existingMobileNumber) {
+      return res.status(400).json({ error: 'Mobile number already in use.' });
+    }
+
+    const newDonor = new Donor({
+      shopName,
+      ownerName,
+      category,
+      indexNumber,
+      number,
+      emailId
+    });
+
+    await newDonor.save();
+
+    res.json({ message: 'Donor registered successfully', donor: newDonor });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Donor Details Update
+app.post('/updateDonorDetails', async (req, res) => {
+  const { shopName, ownerName, category, indexNumber, number, emailId, Address, pinCode, city, document } = req.body;
+
+  try {
+    if (!shopName || !ownerName || !category || !indexNumber || !number || !emailId || !Address || !pinCode || !city || !document) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+
+    const existingDonor = await Donor.findOne({ emailId });
+
+    if (!existingDonor) {
+      return res.status(404).json({ error: 'Donor not found' });
+    }
+
+    existingDonor.shopName = shopName;
+    existingDonor.ownerName = ownerName;
+    existingDonor.category = category;
+    existingDonor.indexNumber = indexNumber;
+    existingDonor.number = number;
+    existingDonor.emailId = emailId;
+    existingDonor.Address = Address;
+    existingDonor.pinCode = pinCode;
+    existingDonor.city = city;
+    existingDonor.document = document;
+
+    await existingDonor.save();
+
+    res.json({ message: 'Donor details updated successfully', donor: existingDonor });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
