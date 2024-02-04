@@ -5,8 +5,9 @@ import {  Text, TouchableOpacity, Button, TextInput, View, Image } from 'react-n
 import { useNavigation } from '@react-navigation/native';
 import { ImageBackground } from 'react-native';
 import bgjh from "../assets/bgjh.png";
-// import RNPickerSelect from 'react-native-picker-select';
-// import {Picker} from @react-native-picker/picker;
+
+
+
 
 
 const  StyledView = styled(View);
@@ -24,9 +25,18 @@ const DonorDetails2 = () => {
     const [city, setCity] = useState('');
     const [document, setDocument] = useState('');
 
+   
+
+   
+
+    
+
 
   return (
     <ImageBackground source={bgjh} style={{ height: '100%', width: '100%'}}>
+
+
+
       <StyledView className=' pt-40'>
         <StyledView className=' m-10'>
                 <StyledTextInput className='border-2 border-red-400 rounded-md pb-4 p-2 mt-6'
