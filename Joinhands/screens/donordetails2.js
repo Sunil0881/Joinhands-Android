@@ -1,4 +1,5 @@
 import React from 'react'
+import { useState } from 'react';
 import { styled } from 'nativewind';
 import {  Text, TouchableOpacity, Button, TextInput, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -32,7 +33,7 @@ const DonorDetails2 = () => {
                   keyboardType="default"
                   placeholder='Address'
                   value={Address}
-                  onChangeText={(text) => setUsername(text)}
+                  onChangeText={(text) => setAddress(text)}
                 />
                 <StyledTextInput className='border-2 border-red-400 rounded-md p-2 mt-6'
                   keyboardType="default"
@@ -53,11 +54,11 @@ const DonorDetails2 = () => {
                   onChangeText={(text) => setDocument(text)}
                 />
 
-                <StyledText className=' text-2xl text-red-500 text-center'>--------------------------</StyledText>
-                  <StyledView className='pt-6'>
+                
+                  <StyledView className='pt-8'>
                     <TouchableOpacity
-                        style={{ borderRadius: 28, backgroundColor: '#f87171', borderWidth: 1, borderColor: '#f87171', padding: 8, alignItems: 'center', marginHorizontal: 96, marginTop: 10 }} onPress={navigateTonext} >
-                        <StyledText className='text-2xl text-white'>Next</StyledText>
+                        style={{ borderRadius: 28, backgroundColor: '#f87171', borderWidth: 1, borderColor: '#f87171', padding: 8, alignItems: 'center', marginHorizontal: 80, marginTop: 10 }} >
+                        <StyledText className='text-2xl text-white'>Submit</StyledText>
                     </TouchableOpacity>
                   </StyledView>
                 </StyledView>

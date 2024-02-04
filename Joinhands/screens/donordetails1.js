@@ -55,12 +55,14 @@ const DonorDetails1 = () => {
                 value={ownerName}
                 onChangeText={(text) => setOwnername(text)}
               />
-              <StyledView className='border-2 border-red-400 rounded-md p-2 mx-10 mt-6'>
-                <RNPickerSelect className="  "
+              <StyledView className='border-2 border-red-400 rounded-md  mt-6'>
+                
+                <RNPickerSelect 
                     placeholder={{ label: 'Select Category', color:"red", value: null }}
-                    items={category}
+                    items={Category}
                     onValueChange={(value) => setCategory(value)}  
                 />
+           
               </StyledView> 
               
               <StyledView className=' flex flex-row'>
