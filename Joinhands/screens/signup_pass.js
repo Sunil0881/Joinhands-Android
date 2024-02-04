@@ -8,24 +8,38 @@ const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
-
-const Signup_Pass = ({navigation}) => {
-
+const Signup_Pass = ({ navigation, route }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleNextPress = () => {
+  const handleNextPress = async () => {
     if (password.trim() !== '' && confirmPassword.trim() !== '' && password === confirmPassword) {
-      // Passwords are not empty and match
-      // Navigate to the next screen or perform any other action
-      // For now, let's log a message
-      console.log('Passwords match! Navigating to the next screen.');
+      try {
+        // Fetch the email from the previous screen
+        const { email } = route.params || {};
 
-      navigation.navigate('Base');
 
+        // Make a request to update the password in the database
+        const response = await fetch('http://192.168.197.178:3000/signup_pass', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          console.log('Password updated successfully');
+          navigation.navigate('Base');
+        } else {
+          const errorData = await response.json();
+          alert(`Error: ${errorData.error}`);
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+        alert('Error occurred. Please try again.');
+      }
     } else {
-      // Passwords are either empty or don't match
-      // Handle accordingly (show error message, etc.)
       console.log('Passwords do not match or are empty.');
     }
   };
@@ -76,4 +90,3 @@ const Signup_Pass = ({navigation}) => {
 };
 
 export default Signup_Pass;
-

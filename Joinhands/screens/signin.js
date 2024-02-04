@@ -1,8 +1,8 @@
 import { styled } from 'nativewind';
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, TextInput, View} from 'react-native';
+import { Text, TouchableOpacity, TextInput, View, Alert } from 'react-native';
 import { ImageBackground } from 'react-native';
-import bgjh from "../assets/bgjh.png"
+import bgjh from "../assets/bgjh.png";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -12,13 +12,29 @@ const Signin = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleNextPress = () => {
-    // Check if email and password are not empty before navigating
+  const handleNextPress = async () => {
     if (email.trim() !== '' && password.trim() !== '') {
-      navigation.navigate('signup');
-    }
-    else{
-        alert("Please enter both Email ID and Password");
+      try {
+        const response = await fetch('http://192.168.197.178:3000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+          navigation.navigate('Base');
+        } else {
+          const errorData = await response.json();
+          Alert.alert('Login Failed', `Error: ${errorData.error}`);
+        }
+      } catch (error) {
+        console.error('Error:', error.message);
+        Alert.alert('Error', 'Error occurred. Please try again.');
+      }
+    } else {
+      Alert.alert('Error', 'Please enter both Email ID and Password');
     }
   };
 
@@ -26,7 +42,6 @@ const Signin = ({ navigation }) => {
     <ImageBackground source={bgjh} style={{ width: '100%', height: '100%' }}>
       <StyledView className='h-full pt-52'>
         <StyledText className='text-3xl pl-10 text-black'>Signin to Joinhands</StyledText>
-
 
         <StyledTextInput
           className='border-2 border-red-400 rounded-md p-2 mx-10 mt-16'
@@ -43,7 +58,6 @@ const Signin = ({ navigation }) => {
           value={password}
           onChangeText={(text) => setPassword(text)}
         />
-         
 
         <TouchableOpacity
           onPress={handleNextPress}
@@ -66,10 +80,9 @@ const Signin = ({ navigation }) => {
             <StyledText className='text-red-600'>Sign Up</StyledText>
           </TouchableOpacity>
         </StyledText>
-
       </StyledView>
     </ImageBackground>
   );
-}
+};
 
 export default Signin;
