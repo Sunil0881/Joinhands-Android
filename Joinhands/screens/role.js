@@ -18,7 +18,7 @@ const Role = () => {
 
     const handleNGOClick = () => {
       // Navigate to the next page for NGO/Trust
-      navigation.navigate(''); // Replace 'NGOPage' with the actual name of your NGO page
+      navigation.navigate('ngoreg1'); // Replace 'NGOPage' with the actual name of your NGO page
     };
   
     const handleDonorClick = () => {

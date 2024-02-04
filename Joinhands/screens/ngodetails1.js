@@ -13,8 +13,8 @@ const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
 const Category = [
-  { label: 'Restaurant', value: 'r' },
-  { label: 'Catering', value: 'c' },
+  { label: 'NGO', value: 'n' },
+  { label: 'Trust', value: 't' },
   { label: 'Others', value: 'o' },
   
 ];
@@ -23,10 +23,10 @@ const Category = [
 
 
 
-const DonorDetails1 = () => {
+const NgoDetails1 = () => {
     const navigation = useNavigation();
 
-    const [shopName, setShopName] = useState('');
+    const [ngoName, setNgoname] = useState('');
     const [ownerName, setOwnername] = useState('');
     const [category, setCategory] = useState('');
     const [indexNumber, setIndexNumber] = useState('');
@@ -35,19 +35,19 @@ const DonorDetails1 = () => {
 
 
     const navigateTonext = () => {
-      navigation.navigate('donorreg2');
+      navigation.navigate('ngoreg2');
   }
 
   return (
     <ImageBackground source={bgjh} style={{ height: '100%', width: '100%'}}>
         <StyledView className=' pt-40 '>
-            <StyledText className=' text-3xl text-center font-semibold'> Donor details</StyledText>
+            <StyledText className=' text-3xl text-center font-semibold'> NGO details</StyledText>
             <StyledView className=' mx-10'>
               <StyledTextInput className='border-2 border-red-400 rounded-md p-2 mt-6'
                 keyboardType="default"
-                placeholder='Shop Name'
-                value={shopName}
-                onChangeText={(text) => setShopName(text)}
+                placeholder='NGO Name'
+                value={ngoName}
+                onChangeText={(text) => setNgoname(text)}
               />
               <StyledTextInput className='border-2 border-red-400 rounded-md p-2  mt-6'
                 keyboardType="default"
@@ -100,4 +100,4 @@ const DonorDetails1 = () => {
   )
 }
 
-export default DonorDetails1;
+export default NgoDetails1;

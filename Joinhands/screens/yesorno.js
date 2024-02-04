@@ -6,6 +6,7 @@ import { ImageBackground } from 'react-native';
 import bgjh from "../assets/bgjh.png"
 
 
+
 const  StyledView = styled(View);
 const StyledText = styled(Text);
 
@@ -26,6 +27,7 @@ const Yesorno = () => {
         <ImageBackground source={bgjh} style={{width: '100%', height: '100%'}}>
         <StyledView className=' h-screen pt-52'>
     <StyledText className='text-3xl pl-10 text-black'>Are you new to our community ?</StyledText>
+    
     <StyledView className='pt-20'>
         <TouchableOpacity
             style={{ borderRadius: 28, backgroundColor: '#f87171', borderWidth: 1, borderColor: '#f87171', padding: 8, alignItems: 'center', marginHorizontal: 96, marginTop: 20 }} onPress={navigateTosignup}>
