@@ -9,34 +9,47 @@ const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
 const Signin = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
 
   const handleNextPress = async () => {
-    if (email.trim() !== '' && password.trim() !== '') {
+    if (emailId.trim() !== '' && password.trim() !== '') {
       try {
         const response = await fetch('http://192.168.197.178:3000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ emailId, password }),
         });
 
         if (response.ok) {
-          navigation.navigate('Base');
+          const responseData = await response.json();
+
+          // Check if the response contains an ngo object with emailId property
+          if (responseData.ngo && responseData.ngo.emailId) {
+            // Navigate to the 'Base' screen or wherever you want to go next
+            navigation.navigate('Base');
+            console.log('Login Successful');
+          } else {
+            // Handle the case where the response doesn't contain a valid ngo object
+            Alert.alert('Login Failed', 'Invalid response from the server.');
+          }
         } else {
           const errorData = await response.json();
           Alert.alert('Login Failed', `Error: ${errorData.error}`);
         }
+
       } catch (error) {
         console.error('Error:', error.message);
         Alert.alert('Error', 'Error occurred. Please try again.');
       }
     } else {
-      Alert.alert('Error', 'Please enter both Email ID and Password');
+      Alert.alert('Error', 'Please enter both emailId ID and Password');
     }
   };
+
+
 
   return (
     <ImageBackground source={bgjh} style={{ width: '100%', height: '100%' }}>
@@ -47,8 +60,8 @@ const Signin = ({ navigation }) => {
           className='border-2 border-red-400 rounded-md p-2 mx-10 mt-16'
           keyboardType="email-address"
           placeholder='Enter mail Id'
-          value={email}
-          onChangeText={(text) => setEmail(text)}
+          value={emailId}
+          onChangeText={(text) => setEmailId(text)}
         />
 
         <StyledTextInput
