@@ -9,11 +9,28 @@ const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
 const Signup = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
 
-  const handleNextPress = () => {
-    if (username.trim() !== '') {
-      navigation.navigate('signup_pass');
+  const handleNextPress = async () => {
+    try {
+      const response = await fetch('http://192.168.197.178:3000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        console.log('User email registered successfully');
+        navigation.navigate('signup_pass', { email: email });
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      alert('Error occurred. Please try again.');
     }
   };
 
@@ -25,16 +42,16 @@ const Signup = ({ navigation }) => {
         </StyledText>
         <StyledTextInput
           className='border-2 border-red-400 rounded-md p-2 mx-10 mt-24'
-          keyboardType="default"
-          placeholder='Phone, email or username'
-          value={username}
-          onChangeText={(text) => setUsername(text)}
+          keyboardType="email-address"
+          placeholder='Enter email'
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
         <StyledView className='pt-14'>
           <TouchableOpacity
             onPress={handleNextPress}
             style={{
-              backgroundColor: username.trim() !== '' ? '#f87171' : '#ccc',
+              backgroundColor: email.trim() !== '' ? '#f87171' : '#ccc',
               borderRadius: 28,
               borderWidth: 1,
               borderColor: '#fca5a5',
@@ -43,7 +60,7 @@ const Signup = ({ navigation }) => {
               marginHorizontal: 30,
               marginTop: 20
             }}
-            disabled={username.trim() === ''}
+            disabled={email.trim() === ''}
           >
             <StyledText className='text-xl text-white'>Next</StyledText>
           </TouchableOpacity>
@@ -53,7 +70,4 @@ const Signup = ({ navigation }) => {
   );
 };
 
-
-
 export default Signup;
-
