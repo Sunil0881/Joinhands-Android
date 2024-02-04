@@ -15,7 +15,7 @@ const Signin = ({ navigation }) => {
   const handleNextPress = async () => {
     if (email.trim() !== '' && password.trim() !== '') {
       try {
-        const response = await fetch('http://192.168.197.178:3000/login', {
+        const response = await fetch('http://192.168.37.144:3000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
