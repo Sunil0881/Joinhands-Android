@@ -14,6 +14,7 @@ import DonorDetails1 from './screens/donordetails1.js';
 import DonorDetails2 from './screens/donordetails2.js';
 import NgoDetails1 from "./screens/ngodetails1.js";
 import NgoDetails2 from "./screens/ngodetails2.js";
+import Donorhome from"./screens/Donorscreens/donorhome.js";
 
 
 
@@ -24,7 +25,7 @@ const App = () => {
   return (
     <Provider store={store}>
     <NavigationContainer>
-         <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}> 
+         <Stack.Navigator initialRouteName="donorhome" screenOptions={{headerShown: false}}> 
           <Stack.Screen name="Home" component={Yesorno} />
           <Stack.Screen name="Signin" component={Signin} />
           <Stack.Screen name="Role" component={Role} />
@@ -35,6 +36,8 @@ const App = () => {
           <Stack.Screen name="donorreg2" component={DonorDetails2} />
           <Stack.Screen name="ngoreg1" component={NgoDetails1} />
           <Stack.Screen name="ngoreg2" component={NgoDetails2} />
+          <Stack.Screen name="donorhome" component={Donorhome} />
+
 
          </Stack.Navigator>
     </NavigationContainer>
