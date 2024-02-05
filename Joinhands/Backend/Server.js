@@ -86,16 +86,12 @@ app.post('/signup_pass', async (req, res) => {
       return res.json({ message: 'Password updated successfully for the Donor.', user: existingDonor });
     }
 
-    // If user not found, handle the case accordingly (e.g., return an error)
     return res.status(404).json({ error: 'User not found' });
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
 
 
 app.post('/login', async (req, res) => {
@@ -106,36 +102,33 @@ app.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required.' });
     }
 
-    console.log('Checking emailId:', emailId);
-
     // Check if the emailId exists in the Ngo documents
     let existingUser = await Ngo.findOne({ emailId });
-
-    console.log('Ngo Check Result:', existingUser);
 
     // If not found in Ngo, check in Donor documents
     if (!existingUser) {
       existingUser = await Donor.findOne({ emailId });
-      console.log('Donor Check Result:', existingUser);
     }
 
     if (!existingUser) {
       return res.status(404).json({ error: 'Email not found' });
     }
 
-    // Update the user's password with the entered password
-    const hashedPassword = await bcrypt.hash(password, 10);
-    existingUser.password = hashedPassword;
+    // Compare the entered password with the hashed password in the database
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
 
-    // Save the updated user document to the database
-    await existingUser.save();
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
 
-    res.json({ message: 'Password updated successfully for the user.', user: existingUser });
+    // If email and password are correct, you can return the user data
+    res.json({ message: 'Login successful', user: existingUser });
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 app.post('/ngoregistration', async (req, res) => {
