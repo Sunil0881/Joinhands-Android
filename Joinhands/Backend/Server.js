@@ -18,62 +18,84 @@ mongoose.connect('mongodb+srv://manikandan05082003:Manicdon07%40@cluster0.scriur
 });
 
 const userSchema = new mongoose.Schema({
-  email: String,
+  emailId: String,
   password: String,
 });
 
 const User = mongoose.model('User', userSchema);
 
 app.post('/signup', async (req, res) => {
-  const { email } = req.body;
+  const { emailId } = req.body;
 
   try {
-    if (!email) {
+    if (!emailId) {
       return res.status(400).json({ error: 'Email is required.' });
     }
 
-    // Check if the user already exists in the database
-    const existingUser = await User.findOne({ email });
+    // Check if the email exists in the Ngo documents
+    let existingNgo = await Ngo.findOne({ emailId });
 
-    if (existingUser) {
-      return res.json({ message: 'User already exists', user: existingUser });
+    // If not found in Ngo, check in Donor documents
+    if (!existingNgo) {
+      existingNgo = await Donor.findOne({ emailId });
     }
 
-    // If the user doesn't exist, create a new user
-    const newUser = new User({ email });
-    await newUser.save();
+    if (existingNgo) {
+      // If the email is found in Ngo or Donor, you might want to handle this case accordingly.
+      return res.json({ message: 'User already exists in Ngo or Donor', user: existingNgo });
+    }
 
-    res.json({ message: 'Email registered successfully', user: newUser });
+    // If the email is not found in Ngo or Donor, you might want to handle this case accordingly.
+    return res.status(404).json({ error: 'Email not found in Ngo or Donor' });
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
+
 app.post('/signup_pass', async (req, res) => {
-  const { email, password } = req.body;
+  const { emailId, password } = req.body;
 
   try {
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+    console.log('Received request with emailId:', emailId);
+
+    if (!emailId || !password) {
+      return res.status(400).json({ error: 'emailId and password are required.' });
     }
 
     // Hash the provided password
     const hashedPassword = await bcrypt.hash(password, 10);
+    // Check if the user exists in NGO
+    let existingNgo = await Ngo.findOne({ emailId });
 
-    // Update the existing user document with the hashed password
-    const updatedUser = await User.findOneAndUpdate({ email }, { $set: { password: hashedPassword } }, { new: true });
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: 'User not found' });
+    if (existingNgo) {
+      // Update the NGO document with the hashed password
+      existingNgo.password = hashedPassword;
+      await existingNgo.save();
+      return res.json({ message: 'Password updated successfully for the NGO.', user: existingNgo });
     }
 
-    res.json({ message: 'Password updated successfully for the user.', user: updatedUser });
+    // If not found in NGO, check in Donor
+    let existingDonor = await Donor.findOne({ emailId });
+
+    if (existingDonor) {
+      // Update the Donor document with the hashed password
+      existingDonor.password = hashedPassword;
+      await existingDonor.save();
+      return res.json({ message: 'Password updated successfully for the Donor.', user: existingDonor });
+    }
+
+    // If user not found, handle the case accordingly (e.g., return an error)
+    return res.status(404).json({ error: 'User not found' });
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
 
 
 app.post('/login', async (req, res) => {
@@ -104,6 +126,8 @@ app.post('/login', async (req, res) => {
     // Update the user's password with the entered password
     const hashedPassword = await bcrypt.hash(password, 10);
     existingUser.password = hashedPassword;
+
+    // Save the updated user document to the database
     await existingUser.save();
 
     res.json({ message: 'Password updated successfully for the user.', user: existingUser });
@@ -114,27 +138,20 @@ app.post('/login', async (req, res) => {
 });
 
 
-
 app.post('/ngoregistration', async (req, res) => {
-  const { ngoName, ownerName, category, indexNumber, number, emailId } = req.body;
-
   try {
+    const { ngoName, ownerName, category, indexNumber, number, emailId } = req.body;
+
     if (!ngoName || !ownerName || !category || !indexNumber || !number || !emailId) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
 
-    // Check if the email is already registered
+    // Check if the email or mobile number is already registered
     const existingEmail = await Ngo.findOne({ emailId });
-    if (existingEmail) {
-      console.log(res.status(400).json({ error: 'Email already in use.' }))
-;      return res.status(400).json({ error: 'Email already in use.' });
-    }
-
-    // Check if the mobile number is already registered
     const existingMobileNumber = await Ngo.findOne({ number });
-    if (existingMobileNumber) {
-      console.log(res.status(400).json({ error: 'Email already in use.' }));
-      return res.status(400).json({ error: 'Mobile number already in use.' });
+
+    if (existingEmail || existingMobileNumber) {
+      return res.status(400).json({ error: 'Email or mobile number already in use.' });
     }
 
     // Create a new Ngo document

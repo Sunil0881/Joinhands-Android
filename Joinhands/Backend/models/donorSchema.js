@@ -11,6 +11,8 @@ const donorSchema = new mongoose.Schema({
   pinCode: String,
   city: String,
   document: String,
+  password: String,
+
 });
 
 const Donor = mongoose.model('Donor', donorSchema);

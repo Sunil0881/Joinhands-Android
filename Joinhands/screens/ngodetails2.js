@@ -40,7 +40,7 @@ const NgoDetails2 = ({ route }) => {
 
       if (response.ok) {
         console.log("NGO registered")
-        navigation.navigate('Signin'); // Navigate to the Home screen or wherever you want to go next
+        navigation.navigate('signup'); // Navigate to the Home screen or wherever you want to go next
       } else {
         const errorData = await response.json();
         Alert.alert('Submission Failed', `Error: ${errorData.error}`);

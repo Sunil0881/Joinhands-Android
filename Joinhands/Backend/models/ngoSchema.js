@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const ngoSchema = new mongoose.Schema({
   email: String,
-  password: String,
   ngoName: String,
   ownerName: String,
   category: String,
@@ -13,6 +12,7 @@ const ngoSchema = new mongoose.Schema({
   pinCode: String,
   city: String,
   document: String,
+  password: String,
 });
 
 const Ngo = mongoose.model('Ngo', ngoSchema);

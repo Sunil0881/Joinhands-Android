@@ -3,16 +3,18 @@ import React, { useState } from 'react';
 import { Text, TouchableOpacity, TextInput, View, Alert } from 'react-native';
 import { ImageBackground } from 'react-native';
 import bgjh from "../assets/bgjh.png";
+import { useNavigation } from '@react-navigation/native';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
-const Signin = ({ navigation }) => {
+const Signin = () => {
   const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
-  const handleNextPress = async ({navigation}) => {
+  const handleNextPress = async () => {
     if (emailId.trim() !== '' && password.trim() !== '') {
       try {
         const response = await fetch('http://192.168.197.178:3000/login', {
@@ -24,12 +26,12 @@ const Signin = ({ navigation }) => {
         });
 
         if (response.ok) {
+          console.log('Login Successful');
           const responseData = await response.json();
 
           // Check if the response contains a valid ngo or donor object with emailId property
-          if ((responseData.ngo && responseData.ngo.emailId) || (responseData.donor && responseData.donor.emailId)) {
+          if (responseData.ngo && responseData.ngo.emailId) {
             navigation.navigate('Base');
-            console.log('Login Successful');
           } else {
             console.log(response.status);
           }
@@ -84,8 +86,9 @@ const Signin = ({ navigation }) => {
           <StyledText className='text-xl text-white'>Next</StyledText>
         </TouchableOpacity>
 
-        <StyledText className='pt-16 pl-20'>Don't have an account ?{' '}
-          <TouchableOpacity onPress={() => (navigation.navigate('signup'))}>
+        <StyledText className='pt-16 pl-20'>
+          Don't have an account ?{' '}
+          <TouchableOpacity onPress={() => navigation.navigate('signup')}>
             <StyledText className='text-red-600'>Sign Up</StyledText>
           </TouchableOpacity>
         </StyledText>
