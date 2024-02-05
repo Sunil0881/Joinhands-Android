@@ -92,7 +92,7 @@ const Signin = () => {
 
         <StyledText className='pt-16 pl-20'>
           Don't have an account ?{' '}
-          <TouchableOpacity onPress={() => navigation.navigate('signup')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Role')}>
             <StyledText className='text-red-600'>Sign Up</StyledText>
           </TouchableOpacity>
         </StyledText>
