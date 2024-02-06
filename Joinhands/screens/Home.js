@@ -32,6 +32,7 @@ const Home = () => {
     borderBottomWidth: StyleSheet.hairlineWidth,
   }}>
         <StyledText style={{ fontFamily: 'HammersmithOne_400Regular' }} className='font-Ham text-4xl pt-20 pl-20'>Joinhands</StyledText>
+        <StyledText style={{ fontFamily: 'HammersmithOne_400Regular' }} className='text-center text-2xl'>Feed the Needs</StyledText>
     </StyledView>
     </ImageBackground>
   )
