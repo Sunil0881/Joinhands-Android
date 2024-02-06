@@ -16,7 +16,7 @@ const Signup_Pass = ({ navigation, route }) => {
     if (password.trim() !== '' && confirmPassword.trim() !== '' && password === confirmPassword) {
       try {
         // Fetch the email from the previous screen
-        const { email } = route.params || {};
+        const { emailId } = route.params || {};
 
 
         // Make a request to update the password in the database
@@ -25,7 +25,7 @@ const Signup_Pass = ({ navigation, route }) => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ emailId, password }),
         });
 
         if (response.ok) {

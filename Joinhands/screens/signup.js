@@ -9,7 +9,7 @@ const StyledText = styled(Text);
 const StyledTextInput = styled(TextInput);
 
 const Signup = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [emailId, setEmailId] = useState('');
 
   const handleNextPress = async () => {
     try {
@@ -18,12 +18,12 @@ const Signup = ({ navigation }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ emailId }),
       });
 
       if (response.ok) {
         console.log('User email registered successfully');
-        navigation.navigate('signup_pass', { email: email });
+        navigation.navigate('signup_pass', { emailId: emailId });
       } else {
         const errorData = await response.json();
         alert(`Error: ${errorData.error}`);
@@ -44,14 +44,14 @@ const Signup = ({ navigation }) => {
           className='border-2 border-red-400 rounded-md p-2 mx-10 mt-24'
           keyboardType="email-address"
           placeholder='Enter email'
-          value={email}
-          onChangeText={(text) => setEmail(text)}
+          value={emailId}
+          onChangeText={(text) => setEmailId(text)}
         />
         <StyledView className='pt-14'>
           <TouchableOpacity
             onPress={handleNextPress}
             style={{
-              backgroundColor: email.trim() !== '' ? '#f87171' : '#ccc',
+              backgroundColor: emailId.trim() !== '' ? '#f87171' : '#ccc',
               borderRadius: 28,
               borderWidth: 1,
               borderColor: '#fca5a5',
@@ -60,7 +60,7 @@ const Signup = ({ navigation }) => {
               marginHorizontal: 30,
               marginTop: 20
             }}
-            disabled={email.trim() === ''}
+            disabled={emailId.trim() === ''}
           >
             <StyledText className='text-xl text-white'>Next</StyledText>
           </TouchableOpacity>
