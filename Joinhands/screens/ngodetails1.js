@@ -18,6 +18,7 @@ const Category = [
 ];
 
 const NgoDetails1 = () => {
+
   const navigation = useNavigation();
   const [ngoName, setNgoname] = useState('');
   const [ownerName, setOwnername] = useState('');
@@ -30,6 +31,7 @@ const NgoDetails1 = () => {
   });
   if (!fontsLoaded) {
     return null;
+
   }
 
   const navigateTonext = async () => {

@@ -18,60 +18,18 @@ const Category = [
 ];
 
 const DonorDetails1 = () => {
-  const navigation = useNavigation();
-  const [shopName, setShopName] = useState('');
-  const [ownerName, setOwnerName] = useState('');
-  const [category, setCategory] = useState('');
-  const [indexNumber, setIndexNumber] = useState('');
-  const [number, setNumber] = useState('');
-  const [emailId, setEmailId] = useState('');
-  const [fontsLoaded] = useFonts({
-    HammersmithOne_400Regular,
-  });
+    const navigation = useNavigation();
 
-  const navigateToNext = async () => {
-    try {
-      const response = await fetch('http://192.168.197.178:3000/donorRegistration', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          shopName,
-          ownerName,
-          category,
-          indexNumber,
-          number,
-          emailId,
-        }),
-      });
+    const [shopName, setShopName] = useState('');
+    const [ownerName, setOwnername] = useState('');
+    const [category, setCategory] = useState('');
+    const [indexNumber, setIndexNumber] = useState('');
+    const [number, setNumber] = useState('');
+    const [emailId, setEmailId] = useState('');
 
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-        navigation.navigate('donorreg2', {
-          donorData: {
-            shopName,
-            ownerName,
-            category,
-            indexNumber,
-            number,
-            emailId,
-          },
-        });
-      } else {
-        const errorData = await response.json();
-        console.error(errorData);
-        Alert.alert('Registration Failed', `Error: ${errorData.error}`);
-      }
-    } catch (error) {
-      console.error('Error:', error.message);
-      Alert.alert('Error', 'Error occurred. Please try again.');
-    }
-  };
 
-  if (!fontsLoaded) {
-    return null;
+    const navigateTonext = () => {
+      navigation.navigate('donorreg2');
   }
 
   return (
