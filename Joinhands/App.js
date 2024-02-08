@@ -20,6 +20,7 @@ import NgoDetails2 from "./screens/ngodetails2.js";
 import Donorhome from"./screens/Donorscreens/donorhome.js";
 import Donorfood from './screens/Donorscreens/donorfood.js';
 import Donorprofile from './screens/Donorscreens/donorprofile.js';
+import Donatefood from './screens/Donorscreens/donatefood.js';
 
 import Ngofood from './screens/NGOscreens/ngofood.js';
 import Ngohome from './screens/NGOscreens/ngohome.js';
@@ -33,7 +34,7 @@ const App = () => {
   return (
     <Provider store={store}>
     <NavigationContainer>
-         <Stack.Navigator initialRouteName="ngohome" screenOptions={{headerShown: false}}> 
+         <Stack.Navigator initialRouteName="donatefood" screenOptions={{headerShown: false}}> 
           <Stack.Screen name="Home" component={Yesorno} />
           <Stack.Screen name="Signin" component={Signin} />
           <Stack.Screen name="Role" component={Role} />
@@ -50,6 +51,7 @@ const App = () => {
           <Stack.Screen name="ngohome" component={Ngohome} />
           <Stack.Screen name="ngofood" component={Ngofood} />
           <Stack.Screen name="ngoprofile" component={Ngoprofile} />
+          <Stack.Screen name="donatefood" component={Donatefood} />
 
 
          </Stack.Navigator>

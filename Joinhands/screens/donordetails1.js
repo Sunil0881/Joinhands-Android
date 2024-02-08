@@ -22,7 +22,7 @@ const DonorDetails1 = () => {
 
     const [shopName, setShopName] = useState('');
     const [ownerName, setOwnername] = useState('');
-    const [category, setCategory] = useState('');
+    const [Category, setCategory] = useState('');
     const [indexNumber, setIndexNumber] = useState('');
     const [number, setNumber] = useState('');
     const [emailId, setEmailId] = useState('');
