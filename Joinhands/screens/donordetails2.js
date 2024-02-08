@@ -29,7 +29,7 @@ const DonorDetails2 = ({ route }) => {
   const submitDetails = async () => {
     try {
       const donorDetails = { ...donorData, Address, pinCode, city, document };
-      const response = await fetch('http://192.168.197.178:3000/updateDonorDetails', {
+      const response = await fetch('http://192.168.36.178:3000/updateDonorDetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -30,7 +30,7 @@ const NgoDetails2 = ({ route }) => {
       // Combine the data from NgoDetails1 and NgoDetails2 screens
       const ngoDetails = { ...ngoData, Address, pinCode, city, document };
 
-      const response = await fetch('http://192.168.197.178:3000/updateNgoDetails', {
+      const response = await fetch('http://192.168.36.178:3000/updateNgoDetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

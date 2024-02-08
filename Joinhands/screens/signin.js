@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, TextInput, View, Alert, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, TouchableOpacity, TextInput, View, ImageBackground } from 'react-native';
 import { styled } from 'nativewind';
 import bgjh from "../assets/bgjh.png";
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserCredentials } from '../redux/actions/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -13,11 +16,53 @@ const Signin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  // Retrieve saved credentials from Redux store
+  const savedCredentials = useSelector(state => state.credentials);
+
+  useEffect(() => {
+    // If saved credentials exist, attempt automatic sign-in
+    if (savedCredentials && savedCredentials.emailId && savedCredentials.password) {
+      attemptAutoSignIn(savedCredentials);
+    }
+  }, []);
+
+  const attemptAutoSignIn = async (credentials) => {
+    try {
+      const response = await fetch('http://192.168.197.178:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (response.ok) {
+        console.log('Automatic Sign-in Successful');
+        const responseData = await response.json();
+
+        // Navigate to different screens based on where the email was found
+        if (responseData.foundIn === 'ngo') {
+          navigation.navigate('ngohome');
+        } else if (responseData.foundIn === 'donor') {
+          navigation.navigate('donorhome');
+        } else {
+          setError('Invalid user type');
+        }
+      } else {
+        const errorData = await response.json();
+        setError(`Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error during automatic sign-in:', error.message);
+    }
+  };
 
   const handleNextPress = async () => {
     if (emailId.trim() !== '' && password.trim() !== '') {
       try {
-        const response = await fetch('http://192.168.37.144:3000/login', {
+        const response = await fetch('http://192.168.36.178:3000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -29,11 +74,20 @@ const Signin = () => {
           console.log('Login Successful');
           const responseData = await response.json();
 
-          // Check if the response contains a valid user object with emailId property
-          if (responseData.user) {
-            navigation.navigate('Base', { user: responseData.user });
+          // Store the credentials in local storage using Redux
+          dispatch(setUserCredentials({ emailId, password, foundIn: responseData.foundIn }));
+
+          // Clear input fields
+          setEmailId('');
+          setPassword('');
+
+          // Navigate to different screens based on where the email was found
+          if (responseData.foundIn === 'ngo') {
+            navigation.navigate('ngohome', { emailId: emailId });
+          } else if (responseData.foundIn === 'donor') {
+            navigation.navigate('donorhome', { emailId: emailId });
           } else {
-            setError('Invalid user data');
+            setError('Invalid user type');
           }
         } else {
           const errorData = await response.json();

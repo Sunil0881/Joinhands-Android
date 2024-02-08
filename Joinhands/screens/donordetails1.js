@@ -18,18 +18,63 @@ const Category = [
 ];
 
 const DonorDetails1 = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const [shopName, setShopName] = useState('');
+  const [ownerName, setOwnerName] = useState('');
+  const [category, setCategory] = useState('');
+  const [indexNumber, setIndexNumber] = useState('');
+  const [number, setNumber] = useState('');
+  const [emailId, setEmailId] = useState('');
+  const [fontsLoaded] = useFonts({
+    HammersmithOne_400Regular,
+  });
 
-    const [shopName, setShopName] = useState('');
-    const [ownerName, setOwnername] = useState('');
-    const [Category, setCategory] = useState('');
-    const [indexNumber, setIndexNumber] = useState('');
-    const [number, setNumber] = useState('');
-    const [emailId, setEmailId] = useState('');
+
+   
+  const navigateToNext = async () => {
+    try {
+      const response = await fetch('http://192.168.36.178:3000/donorRegistration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shopName,
+          ownerName,
+          category,
+          indexNumber,
+          number,
+          emailId,
+        }),
+      });
 
 
-    const navigateTonext = () => {
-      navigation.navigate('donorreg2');
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        navigation.navigate('donorreg2', {
+          donorData: {
+            shopName,
+            ownerName,
+            category,
+            indexNumber,
+            number,
+            emailId,
+          },
+        });
+      } else {
+        const errorData = await response.json();
+        console.error(errorData);
+        Alert.alert('Registration Failed', `Error: ${errorData.error}`);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      Alert.alert('Error', 'Error occurred. Please try again.');
+    }
+  };
+
+  if (!fontsLoaded) {
+    return null;
   }
 
   return (
