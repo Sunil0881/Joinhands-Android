@@ -20,7 +20,7 @@ const Signup_Pass = ({ navigation, route }) => {
 
 
         // Make a request to update the password in the database
-        const response = await fetch('http://192.168.37.144:3000/signup_pass', {
+        const response = await fetch('http://192.168.36.178/signup_pass', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
