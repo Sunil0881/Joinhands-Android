@@ -103,26 +103,62 @@ app.post('/login', async (req, res) => {
     }
 
     // Check if the emailId exists in the Ngo documents
-    let existingUser = await Ngo.findOne({ emailId });
+    let user = await Ngo.findOne({ emailId });
 
     // If not found in Ngo, check in Donor documents
-    if (!existingUser) {
-      existingUser = await Donor.findOne({ emailId });
+    if (!user) {
+      user = await Donor.findOne({ emailId });
     }
 
-    if (!existingUser) {
+    if (!user) {
       return res.status(404).json({ error: 'Email not found' });
     }
 
     // Compare the entered password with the hashed password in the database
-    const passwordMatch = await bcrypt.compare(password, existingUser.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // If email and password are correct, you can return the user data
-    res.json({ message: 'Login successful', user: existingUser });
+    // If email and password are correct, return the user data with the collection information
+    let collection;
+    if (user instanceof Ngo) {
+      collection = 'ngo';
+    } else if (user instanceof Donor) {
+      collection = 'donor';
+    }
+
+    res.json({ message: 'Login successful', user, foundIn: collection });
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// Add a new endpoint to fetch user details by email
+app.post('/user/details', async (req, res) => {
+  const { emailId } = req.body;
+
+  try {
+    if (!emailId) {
+      return res.status(400).json({ error: 'Email is required.' });
+    }
+
+    // Search for the user by email in both Ngo and Donor collections
+    let user = await Ngo.findOne({ emailId });
+
+    if (!user) {
+      user = await Donor.findOne({ emailId });
+    }
+
+    if (user) {
+      // If user found, return their details
+      return res.json(user);
+    } else {
+      return res.status(404).json({ error: 'User not found.' });
+    }
   } catch (error) {
     console.error('Error:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });

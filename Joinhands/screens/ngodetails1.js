@@ -36,7 +36,7 @@ const NgoDetails1 = () => {
 
   const navigateTonext = async () => {
     try {
-      const response = await fetch('http://192.168.197.178:3000/ngoregistration', {
+      const response = await fetch('http://192.168.36.178:3000/ngoregistration', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
