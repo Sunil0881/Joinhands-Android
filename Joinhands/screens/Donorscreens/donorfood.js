@@ -14,7 +14,7 @@ const StyledText = styled(Text);
 
 
 
-const Ngohome= () => {
+const Donorfood = () => {
 
     const [fontsLoaded] = useFonts({
         HammersmithOne_400Regular,
@@ -27,16 +27,17 @@ const Ngohome= () => {
     const navigation = useNavigation();
 
     const goTofood = () => {
-         navigation.navigate('ngofood'); 
+        navigation.navigate('donorfood'); 
     };
-            
+        
     const goToprofile = () => {
-        navigation.navigate('ngoprofile'); 
+        navigation.navigate('donorprofile'); 
+    };  
+    
+    const goTohome = () => {
+        navigation.navigate('donorhome'); 
     };  
         
-    const goTohome = () => {
-        navigation.navigate('ngohome'); 
-    };  
 
     
 
@@ -46,19 +47,9 @@ const Ngohome= () => {
             <StyledView className='items-center '>
               <StyledText className='text-red-400 text-3xl pt-12 pb-5 ' style={{ fontFamily: 'HammersmithOne_400Regular' }} >Joinhands</StyledText>
             </StyledView>
-            <StyledText>ngo home</StyledText>
-            <StyledView className='items-center  bg-red-400 pb-3 mx-7 rounded-3xl ' style={{elevation: 10}} >
-                <StyledView className='flex flex-row gap-10 pt-10 '>
-                    <StyledView className='items-center'>
-                        <StyledText className=' text-5xl text-white'>0</StyledText>
-                        <StyledText className='text-lg font-semibold text-white'>Task Completed</StyledText>
-                    </StyledView>
-                    <StyledView className='items-center' >
-                        <StyledText className=' text-5xl text-white'>0</StyledText>
-                        <StyledText className='text-lg font-semibold text-white'>Served People</StyledText>
-                    </StyledView>
-                </StyledView>
-            </StyledView >
+
+            <StyledText>donor food</StyledText>
+            
             <StyledView className=' bg-white  pt-1 absolute bottom-0 w-screen  rounded-md'style={{elevation: 10}} >
                 <StyledView className='flex flex-row justify-around '>
                 <Icon
@@ -68,7 +59,7 @@ const Ngohome= () => {
                     onPress={goTohome}
                     />
                 <Icon
-                    name="cutlery"
+                    name="plus"
                     size={45}
                     color="#f87171"
                     onPress={goTofood}
@@ -85,4 +76,4 @@ const Ngohome= () => {
      );
 }
  
-export default Ngohome;
+export default Donorfood;

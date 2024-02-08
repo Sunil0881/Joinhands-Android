@@ -10,13 +10,21 @@ import Role from "./screens/role.js"
 import signup from './screens/signup.js';
 import Signup_Pass from './screens/signup_pass.js';
 import Home from './screens/Home.js';
+
 import DonorDetails1 from './screens/donordetails1.js';
 import DonorDetails2 from './screens/donordetails2.js';
+
 import NgoDetails1 from "./screens/ngodetails1.js";
 import NgoDetails2 from "./screens/ngodetails2.js";
-import Donorhome from"./screens/Donorscreens/donorhome.js";
-import Ngohome from './screens/NGOscreens/ngohome.js';
 
+import Donorhome from"./screens/Donorscreens/donorhome.js";
+import Donorfood from './screens/Donorscreens/donorfood.js';
+import Donorprofile from './screens/Donorscreens/donorprofile.js';
+
+
+import Ngofood from './screens/NGOscreens/ngofood.js';
+import Ngohome from './screens/NGOscreens/ngohome.js';
+import Ngoprofile from './screens/NGOscreens/ngoprofile.js';
 
 
 const Stack = createStackNavigator();
@@ -26,7 +34,9 @@ const App = () => {
   return (
     <Provider store={store}>
     <NavigationContainer>
+
          <Stack.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}> 
+
           <Stack.Screen name="Home" component={Yesorno} />
           <Stack.Screen name="Signin" component={Signin} />
           <Stack.Screen name="Role" component={Role} />
@@ -37,8 +47,15 @@ const App = () => {
           <Stack.Screen name="donorreg2" component={DonorDetails2} />
           <Stack.Screen name="ngoreg1" component={NgoDetails1} />
           <Stack.Screen name="ngoreg2" component={NgoDetails2} />
+            
           <Stack.Screen name="donorhome" component={Donorhome} />
+          <Stack.Screen name="donorfood" component={Donorfood} />
+          <Stack.Screen name="donorprofile" component={Donorprofile} />
+            
           <Stack.Screen name="ngohome" component={Ngohome} />
+          <Stack.Screen name="ngofood" component={Ngofood} />
+          <Stack.Screen name="ngoprofile" component={Ngoprofile} />
+
 
 
          </Stack.Navigator>
